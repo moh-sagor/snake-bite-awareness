@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangladeshi Snakes Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding-top: 80px; /* Matches header height */
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #mobile-menu.hidden {
+            display: none;
+        }
+        #mobile-menu:not(.hidden) {
+            display: block;
+        }
+        .snake-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .snake-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .snake-image {
+            height: 250px;
+            object-fit: cover;
+            object-position: center;
+        }
+        .map-container {
+            height: 200px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .search-container {
+            background: linear-gradient(135deg, #4ade80, #3b82f6);
+        }
+        .type-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+        .toxic {
+            background-color: #ef4444;
+            color: white;
+        }
+        .nontoxic {
+            background-color: #10b981;
+            color: white;
+        }
+        .no-results {
+            min-height: 300px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: modalopen 0.3s;
+        }
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .close-btn:hover {
+            color: #000;
+            transform: scale(1.1);
+        }
+        .snake-details-image {
+            height: 300px;
+            object-fit: cover;
+            object-position: center;
+        }
+        .map-image {
+            height: 250px;
+            object-fit: contain;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-green-800 text-white shadow-lg fixed top-0 left-0 w-full z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-snake text-2xl"></i>
+                <h1 class="text-xl font-bold">SnakeBite Awareness</h1>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-green-200 transition">Home</a></li>
+                    <li><a href="hospital.html" class="hover:text-green-200 transition">Hospital Directory</a></li>
+                    <li><a href="snakes.html" class="font-semibold text-green-200">Snakes</a></li>
+                    <li><a href="rescue_teams.html" class="hover:text-green-200">Rescue Teams</a></li>
+                    <li><a href="index.html#about" class="hover:text-green-200 transition">About</a></li>
+                    <li><a href="index.html#features" class="hover:text-green-200 transition">Features</a></li>
+                    <li><a href="index.html#screenshots" class="hover:text-green-200 transition">Screenshots</a></li>
+                    <li><a href="index.html#contact" class="hover:text-green-200 transition">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="md:hidden text-xl" id="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden bg-green-700 hidden" id="mobile-menu">
+            <ul class="px-4 py-2 space-y-2">
+                <li><a href="index.html" class="block py-2 hover:text-green-200">Home</a></li>
+                <li><a href="hospital.html" class="block py-2 hover:text-green-200">Hospital Directory</a></li>
+                <li><a href="snakes.html" class="block py-2 font-semibold text-green-200">Snakes</a></li>
+                <li><a href="rescue_teams.html" class="block py-2 hover:text-green-200">Rescue Teams</a></li>
+                <li><a href="index.html#about" class="block py-2 hover:text-green-200">About</a></li>
+                <li><a href="index.html#features" class="block py-2 hover:text-green-200">Features</a></li>
+                <li><a href="index.html#screenshots" class="block py-2 hover:text-green-200">Screenshots</a></li>
+                <li><a href="index.html#contact" class="block py-2 hover:text-green-200">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+
+    <div class="container mx-auto px-4 py-8" >
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">বাংলাদেশের সাপের তথ্য</h1>
+            <p class="text-lg text-gray-600">বাংলাদেশে পাওয়া বিভিন্ন প্রজাতির সাপ সম্পর্কে তথ্য জানুন</p>
+        </div>
+
+        <!-- Search Section -->
+        <div class="search-container rounded-xl p-6 mb-10 text-white">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-2xl font-bold mb-4">সাপ খুঁজুন</h2>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="সাপের নাম, বৈজ্ঞানিক নাম বা ধরন লিখুন..." 
+                            class="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                        <i class="fas fa-search absolute right-3 top-3.5 text-gray-500"></i>
+                    </div>
+                    <button 
+                        id="searchBtn" 
+                        class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-medium transition duration-200"
+                    >
+                        অনুসন্ধান করুন
+                    </button>
+                </div>
+                <div class="mt-4 flex flex-wrap gap-2">
+                    <button class="filter-btn bg-white text-green-700 px-3 py-1 rounded-full text-sm font-medium" data-type="nontoxic">
+                        নির্বিষ সাপ
+                    </button>
+                    <button class="filter-btn bg-white text-red-700 px-3 py-1 rounded-full text-sm font-medium" data-type="toxic">
+                        বিষধর সাপ
+                    </button>
+                    <button class="filter-btn bg-white text-blue-700 px-3 py-1 rounded-full text-sm font-medium" data-type="all">
+                        সব সাপ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Count -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold text-gray-700">সাপের তালিকা</h2>
+            <div id="resultCount" class="text-gray-600">মোট 2টি সাপ পাওয়া গেছে</div>
+        </div>
+
+        <!-- Snake Cards Grid -->
+        <div id="snakesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Cards will be inserted here by JavaScript -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="no-results hidden flex-col items-center justify-center text-center py-16">
+            <i class="fas fa-snake text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-medium text-gray-600 mb-2">কোনো সাপ পাওয়া যায়নি</h3>
+            <p class="text-gray-500">আপনার অনুসন্ধানের সাথে মিলছে এমন কোনো সাপ খুঁজে পাওয়া যায়নি। অনুগ্রহ করে অন্য কোনো শব্দ দিয়ে আবার চেষ্টা করুন।</p>
+        </div>
+    </div>
+
+    <!-- Modal for Snake Details -->
+    <div id="snakeModal" class="modal">
+        <div class="modal-content relative">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <div id="modalContent" class="p-6">
+                <!-- Modal content will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        
+        // DOM elements
+        const snakesContainer = document.getElementById('snakesContainer');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const noResults = document.getElementById('noResults');
+        const resultCount = document.getElementById('resultCount');
+        const snakeModal = document.getElementById('snakeModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModal = document.getElementById('closeModal');
+    
+        // Current filter state
+        let currentFilter = 'all';
+        let currentSearchTerm = '';
+        let snakesData = []; // To store the fetched snake data
+    
+        // Fetch snakes data from API
+        async function fetchSnakes() {
+            try {
+                const response = await fetch('https://snakebite.smartsoft-bd.com/api/snakes');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                if (data.status === 'success') {
+                    snakesData = data.snakes; // Store the snakes data
+                    displaySnakes(snakesData); // Display the fetched data
+                } else {
+                    throw new Error(data.message || 'Failed to fetch snakes data');
+                }
+            } catch (error) {
+                console.error('Error fetching snakes:', error);
+                snakesContainer.innerHTML = '<p class="text-red-500 text-center">তথ্য লোড করতে ব্যর্থ। পরে আবার চেষ্টা করুন।</p>';
+            }
+        }
+    
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchSnakes(); // Fetch data on page load
+        });
+    
+        // Display snakes function
+        function displaySnakes(snakes) {
+            snakesContainer.innerHTML = '';
+            
+            if (snakes.length === 0) {
+                noResults.classList.remove('hidden');
+                resultCount.textContent = 'কোনো সাপ পাওয়া যায়নি';
+                return;
+            } else {
+                noResults.classList.add('hidden');
+                resultCount.textContent = `মোট ${snakes.length}টি সাপ পাওয়া গেছে`;
+            }
+    
+            snakes.forEach(snake => {
+                const snakeCard = document.createElement('div');
+                snakeCard.className = 'snake-card bg-white rounded-xl overflow-hidden relative';
+                
+                // Type badge
+                const typeBadge = document.createElement('span');
+                typeBadge.className = `type-badge ${snake.type === 'toxic' ? 'toxic' : 'nontoxic'}`;
+                typeBadge.textContent = snake.type === 'toxic' ? 'বিষধর' : 'নির্বিষ';
+                snakeCard.appendChild(typeBadge);
+                
+                // Card content
+                snakeCard.innerHTML += `
+                    <div class="h-full flex flex-col">
+                        <div class="relative">
+                            <img 
+                                src="https://snakebite.smartsoft-bd.com/images/snakes/${snake.image}" 
+                                alt="${snake.bangla_name}" 
+                                class="snake-image w-full"
+                                onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Available'"
+                            >
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <div class="mb-4">
+                                <h3 class="text-xl font-bold text-gray-800 mb-1">${snake.bangla_name}</h3>
+                                <p class="text-gray-600 text-sm">${snake.local_name}</p>
+                                <div class="mt-2 flex items-center text-sm text-gray-500">
+                                    <i class="fas fa-globe-americas mr-1"></i>
+                                    <span>${snake.english_name}</span>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <i class="fas fa-microscope mr-1"></i>
+                                    <span class="italic">${snake.scientific_name}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="flex items-start mb-2">
+                                    <i class="fas fa-map-marker-alt text-gray-500 mt-1 mr-2"></i>
+                                    <span class="text-gray-700">${snake.availability}</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fas fa-skull-crossbones text-gray-500 mt-1 mr-2"></i>
+                                    <span class="text-gray-700">${snake.venom_desc}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-auto pt-4 border-t border-gray-100">
+                                <button 
+                                    onclick="showSnakeDetails(${snake.id})" 
+                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-200"
+                                >
+                                    বিস্তারিত দেখুন
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                snakesContainer.appendChild(snakeCard);
+            });
+        }
+    
+        // Filter snakes by type
+        function filterSnakes(type) {
+            currentFilter = type;
+            applyFilters();
+        }
+    
+        // Search snakes
+        function searchSnakes() {
+            currentSearchTerm = searchInput.value.toLowerCase();
+            applyFilters();
+        }
+    
+        // Apply both search and filter
+        function applyFilters() {
+            let filteredSnakes = snakesData;
+            
+            // Apply type filter
+            if (currentFilter !== 'all') {
+                filteredSnakes = filteredSnakes.filter(snake => snake.type === currentFilter);
+            }
+            
+            // Apply search term
+            if (currentSearchTerm) {
+                filteredSnakes = filteredSnakes.filter(snake => 
+                    snake.bangla_name.toLowerCase().includes(currentSearchTerm) ||
+                    snake.local_name.toLowerCase().includes(currentSearchTerm) ||
+                    snake.english_name.toLowerCase().includes(currentSearchTerm) ||
+                    snake.scientific_name.toLowerCase().includes(currentSearchTerm) ||
+                    snake.type.toLowerCase().includes(currentSearchTerm)
+                );
+            }
+            
+            displaySnakes(filteredSnakes);
+        }
+    
+        // Show snake details in modal
+        function showSnakeDetails(id) {
+            const snake = snakesData.find(s => s.id === id);
+            if (snake) {
+                modalContent.innerHTML = `
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <div class="mb-4">
+                                <img 
+                                    src="https://snakebite.smartsoft-bd.com/images/snakes/${snake.image}" 
+                                    alt="${snake.bangla_name}" 
+                                    class="snake-details-image w-full rounded-lg"
+                                    onerror="this.src='https://via.placeholder.com/600x400?text=Image+Not+Available'"
+                                >
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg">
+                                <img 
+                                    src="https://snakebite.smartsoft-bd.com/images/snakes/${snake.map_image}" 
+                                    alt="Distribution Map" 
+                                    class="map-image w-full"
+                                    onerror="this.src='https://via.placeholder.com/600x300?text=Map+Not+Available'"
+                                >
+                                <p class="text-center mt-2 text-gray-700">বিস্তার এলাকা</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h2 class="text-2xl font-bold text-gray-800">${snake.bangla_name}</h2>
+                                    <p class="text-gray-600">${snake.local_name}</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-sm font-bold ${snake.type === 'toxic' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">
+                                    ${snake.type === 'toxic' ? 'বিষধর সাপ' : 'নির্বিষ সাপ'}
+                                </span>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">সাধারণ তথ্য</h3>
+                                <div class="space-y-2">
+                                    <div class="flex">
+                                        <span class="font-medium text-gray-700 w-32">ইংরেজি নাম:</span>
+                                        <span>${snake.english_name}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-medium text-gray-700 w-32">বৈজ্ঞানিক নাম:</span>
+                                        <span class="italic">${snake.scientific_name}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-medium text-gray-700 w-32">বিষের ধরন:</span>
+                                        <span>${snake.venom_desc}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-medium text-gray-700 w-32">বিস্তার:</span>
+                                        <span>${snake.availability}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">বিবরণ</h3>
+                                <p class="text-gray-700 whitespace-pre-line">${snake.description}</p>
+                            </div>
+                            
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h3 class="text-lg font-semibold text-blue-800 mb-2">জরুরি তথ্য</h3>
+                                <p class="text-blue-700">
+                                    ${snake.type === 'toxic' ? 
+                                        '⚠️ এই সাপ বিষধর। দেখতে পেলে দূরে থাকুন এবং স্থানীয় বন্যপ্রাণী কর্তৃপক্ষকে জানান।' : 
+                                        '✅ এই সাপ নির্বিষ এবং মানুষের জন্য ক্ষতিকর নয়। সাধারণত এরা শান্ত প্রকৃতির হয়।'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                snakeModal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+    
+        // Close modal
+        function closeSnakeModal() {
+            snakeModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    
+        // Event listeners
+        searchBtn.addEventListener('click', searchSnakes);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                searchSnakes();
+            }
+        });
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('bg-blue-100', 'border-blue-500'));
+                btn.classList.add('bg-blue-100', 'border-blue-500');
+                filterSnakes(btn.dataset.type);
+            });
+        });
+    
+        // Close modal when clicking X or outside
+        closeModal.addEventListener('click', closeSnakeModal);
+        window.addEventListener('click', (e) => {
+            if (e.target === snakeModal) {
+                closeSnakeModal();
+            }
+        });
+    
+        // Make showSnakeDetails globally available
+        window.showSnakeDetails = showSnakeDetails;
+    </script>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Bite Awareness App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            padding-top: 60px; /* Adjust based on header height */
+        }
+        .snake-card {
+            transition: all 0.3s ease;
+        }
+        .snake-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .snake-modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .snake-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .snake-modal:not(.active) {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .hero-slide {
+            background: linear-gradient(135deg, #069b32, #363b3a);
+            background-size: cover;
+            background-position: center;
+            min-height: 500px;
+            position: relative;
+        }
+        .hero-slide[style*="background-image"] {
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-slide[style*="background-image: url('')"] {
+            background: linear-gradient(135deg, #34D399, #10B981);
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .hero-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        .hero-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .hero-dot.active {
+            background: white;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Header/Navigation -->
+    <header class="bg-green-800 text-white shadow-lg fixed top-0 left-0 w-full z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-snake text-2xl"></i>
+                <h1 class="text-xl font-bold">SnakeBite Awareness</h1>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="font-semibold text-green-200 transition">Home</a></li>
+                    <li><a href="hospital.html" class="hover:text-green-200 transition">Hospital Directory</a></li>
+                    <li><a href="snakes.html" class="hover:text-green-200">Snakes</a></li>
+                    <li><a href="rescue_teams.html" class="hover:text-green-200">Rescue Teams</a></li>
+                    <li><a href="#about" class="hover:text-green-200 transition">About</a></li>
+                    <li><a href="#features" class="hover:text-green-200 transition">Features</a></li>
+                    <li><a href="#screenshots" class="hover:text-green-200 transition">Screenshots</a></li>
+                    <li><a href="#contact" class="hover:text-green-200 transition">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="md:hidden text-xl" id="mobile-menu-button">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden bg-green-700 hidden" id="mobile-menu">
+            <ul class="px-4 py-2 space-y-2">
+                <li><a href="#home" class="block py-2 hover:text-green-200">Home</a></li>
+                <li><a href="hospital.html" class="block py-2 hover:text-green-200">Hospital Directory</a></li>
+                <li><a href="snakes.html" class="block py-2 hover:text-green-200">Snakes</a></li>
+                <li><a href="rescue_teams.html" class="block py-2 text-green-200">Rescue Teams</a></li>
+                <li><a href="#about" class="block py-2 hover:text-green-200">About</a></li>
+                <li><a href="#features" class="block py-2 hover:text-green-200">Features</a></li>
+                <li><a href="#screenshots" class="block py-2 hover:text-green-200">Screenshots</a></li>
+                <li><a href="#contact" class="block py-2 hover:text-green-200">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section with Slider -->
+    <section id="home" class="relative text-white">
+        <div class="hero-slider relative overflow-hidden">
+         <!-- Slide 1 -->
+            <div class="hero-slide flex items-center justify-center">
+                <div class="container mx-auto px-4 relative z-10 text-center">
+                    <div class="max-w-2xl mx-auto">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4">Snake Bite Awareness App</h1>
+                        <p class="text-xl mb-8">Stay Informed. Stay Safe. Save Lives.</p>
+                        <div class="flex flex-col sm:flex-row justify-center gap-4">
+                            <button class="bg-white text-green-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition flex items-center justify-center gap-2">
+                                <i class="fab fa-google-play text-2xl"></i>
+                                <span>Download on Google Play</span>
+                            </button>
+                            <button class="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition flex items-center justify-center gap-2">
+                                <i class="fab fa-apple text-2xl"></i>
+                                <span>Download on App Store</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="hero-slide flex items-center justify-center hidden">
+                <div class="container mx-auto px-4 relative z-10 text-center">
+                    <div class="max-w-2xl mx-auto">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white-800">Learn About Snakes</h1>
+                        <p class="text-xl mb-8 text-wheat-700">Identify venomous snakes with our comprehensive guide.</p>
+                        <a href="snakes.html" class="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition">
+                            Explore Snakes
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="hero-slide flex items-center justify-center hidden">
+                <div class="container mx-auto px-4 relative z-10 text-center">
+                    <div class="max-w-2xl mx-auto">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-white-800">Find Help Fast</h1>
+                        <p class="text-xl mb-8 text-wheat-700">Locate hospitals with antivenom near you.</p>
+                        <a href="hospital.html" class="bg-black text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition">
+                            Find Hospitals
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Slider Dots -->
+        <div class="hero-dots">
+            <span class="hero-dot active" data-slide="0"></span>
+            <span class="hero-dot" data-slide="1"></span>
+            <span class="hero-dot" data-slide="2"></span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-green-800 mb-6">About the App</h2>
+                    <p class="text-gray-700 mb-6 text-lg">
+                        Reducing snakebite deaths in Bangladesh through education and quick access to medical help. 
+                        Our app provides critical information to help identify snakes, administer first aid, and 
+                        locate the nearest medical facilities with antivenom.
+                    </p>
+                    <div class="flex items-center gap-8">
+                        <div class="bg-gray-200 p-4 rounded-lg w-32 h-32 flex items-center justify-center">
+                            <span class="text-gray-500">Smart Software Logo</span>
+                        </div>
+                        <div class="bg-gray-200 p-4 rounded-lg w-32 h-32 flex items-center justify-center">
+                            <span class="text-gray-500">Forest Dept Logo</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="bg-gray-200 rounded-lg aspect-video flex items-center justify-center">
+                        <span class="text-gray-500">App Preview Image</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-green-800 mb-12">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <a href="snakes.html">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition snake-card">
+                        <div class="text-green-600 text-4xl mb-4">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Snake Identification</h3>
+                        <p class="text-gray-600">Identify snakes with our comprehensive database and image recognition technology.</p>
+                    </div>
+                </a>
+                <!-- Feature 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition snake-card">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-first-aid"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">First Aid Guidance</h3>
+                    <p class="text-gray-600">Step-by-step instructions for snake bite first aid while waiting for medical help.</p>
+                </div>
+                <!-- Feature 3 -->
+                <a href="hospital.html">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition snake-card">
+                        <div class="text-green-600 text-4xl mb-4">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Hospital Directory</h3>
+                        <p class="text-gray-600">Locate nearby hospitals with antivenom using our interactive map.</p>
+                    </div>
+                </a>
+                <!-- Feature 4 -->
+                <a href="rescue_teams.html">
+                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition snake-card">
+                        <div class="text-green-600 text-4xl mb-4">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Snake Rescuer Contacts</h3>
+                        <p class="text-gray-600">Direct access to local snake rescuers and wildlife experts.</p>
+                    </div>
+                </a>
+                <!-- Feature 5 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition snake-card">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Educational Resources</h3>
+                    <p class="text-gray-600">Learn about snake behavior, prevention, and safety measures.</p>
+                </div>
+                <!-- Feature 6 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition snake-card">
+                    <div class="text-green-600 text-4xl mb-4">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Emergency Numbers</h3>
+                    <p class="text-gray-600">Quick dial for emergency services and poison control centers.</p>
+                </div>
+            </div>
+            <!-- Snake Information Section -->
+            <div class="mt-16 text-center">
+                <a href="snakes.html" class="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-lg transition">
+                    View All Snake Information
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screenshots Section -->
+    <section id="screenshots" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-green-800 mb-12">App Screenshots</h2>
+            <div class="relative">
+                <div class="flex overflow-x-auto space-x-4 py-4 px-2" id="screenshots-carousel">
+                    <div class="flex-shrink-0 w-64 h-auto">
+                        <div class="bg-gray-200 rounded-lg aspect-[9/16] flex items-center justify-center">
+                            <span class="text-gray-500">App Screenshot 1</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-auto">
+                        <div class="bg-gray-200 rounded-lg aspect-[9/16] flex items-center justify-center">
+                            <span class="text-gray-500">App Screenshot 2</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-auto">
+                        <div class="bg-gray-200 rounded-lg aspect-[9/16] flex items-center justify-center">
+                            <span class="text-gray-500">App Screenshot 3</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-auto">
+                        <div class="bg-gray-200 rounded-lg aspect-[9/16] flex items-center justify-center">
+                            <span class="text-gray-500">App Screenshot 4</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-auto">
+                        <div class="bg-gray-200 rounded-lg aspect-[9/16] flex items-center justify-center">
+                            <span class="text-gray-500">App Screenshot 5</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 w-64 h-auto">
+                        <div class="bg-gray-200 rounded-lg aspect-[9/16] flex items-center justify-center">
+                            <span class="text-gray-500">App Screenshot 6</span>
+                        </div>
+                    </div>
+                    
+                </div>
+                <button class="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full shadow-md p-2 -ml-4" id="prev-btn">
+                    <i class="fas fa-chevron-left text-green-700"></i>
+                </button>
+                <button class="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full shadow-md p-2 -mr-4" id="next-btn">
+                    <i class="fas fa-chevron-right text-green-700"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-center text-green-800 mb-12">Contact Us</h2>
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Get in Touch</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <i class="fas fa-envelope text-green-600 mt-1"></i>
+                                    <div>
+                                        <p class="font-medium">Email</p>
+                                        <a href="mailto:crypticsnakeprojectsufal@gmail.com" class="text-gray-600 hover:text-green-700">
+                                            crypticsnakeprojectsufal@gmail.com
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <i class="fas fa-phone-alt text-green-600 mt-1"></i>
+                                    <div>
+                                        <p class="font-medium">Phone</p>
+                                        <a href="tel:+8801718475287" class="text-gray-600 hover:text-green-700">
+                                            +880 1718 475287
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-4">Follow Us</h3>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-gray-200 hover:bg-green-600 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="bg-gray-200 hover:bg-green-600 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="bg-gray-200 hover:bg-green-600 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="bg-gray-200 hover:bg-green-600 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-gray-700 mb-1">Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 mb-1">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600"></textarea>
+                        </div>
+                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-6 rounded-lg transition w-full">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-green-900 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p>© 2023 Smart Software Limited. All rights reserved.</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-green-200">Terms of Service</a>
+                    <a href="#" class="hover:text-green-200">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Hero slider
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.hero-dot');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('hidden', i !== index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+
+        // Auto-slide every 5 seconds
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+
+        // Screenshot carousel navigation
+        const carousel = document.getElementById('screenshots-carousel');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        prevBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

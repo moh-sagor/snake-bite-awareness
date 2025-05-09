@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rescue Teams Directory | Snake Bite Awareness App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    body {
+        margin: 0;
+        padding-top: 80px; /* Matches header height */
+    }
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 50;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    #mobile-menu.hidden {
+        display: none;
+    }
+    #mobile-menu:not(.hidden) {
+        display: block;
+    }
+    .rescue-card {
+        transition: all 0.3s ease;
+    }
+    .rescue-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .search-container {
+        background: linear-gradient(135deg, #4ade80, #3b82f6);
+    }
+    .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #4ade80;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+</head>
+<body class="font-sans bg-gray-50">
+  <!-- Header/Navigation -->
+  <header class="bg-green-800 text-white shadow-lg fixed top-0 left-0 w-full z-50">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-snake text-2xl"></i>
+            <h1 class="text-xl font-bold">SnakeBite Awareness</h1>
+        </div>
+        <nav class="hidden md:block">
+            <ul class="flex space-x-6">
+                <li><a href="index.html" class="hover:text-green-200 transition">Home</a></li>
+                <li><a href="hospital.html" class="hover:text-green-200">Hospital Directory</a></li>
+                <li><a href="rescue_teams.html" class="font-semibold text-green-200">Rescue Teams</a></li>
+                <li><a href="snakes.html" class="hover:text-green-200">Snakes</a></li>
+                <li><a href="index.html#about" class="hover:text-green-200 transition">About</a></li>
+                <li><a href="index.html#features" class="hover:text-green-200 transition">Features</a></li>
+                <li><a href="index.html#screenshots" class="hover:text-green-200 transition">Screenshots</a></li>
+                <li><a href="index.html#contact" class="hover:text-green-200 transition">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="md:hidden text-xl" id="mobile-menu-button">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div class="md:hidden bg-green-700 hidden" id="mobile-menu">
+        <ul class="px-4 py-2 space-y-2">
+            <li><a href="index.html" class="block py-2 hover:text-green-200">Home</a></li>
+            <li><a href="hospital.html" class="block py-2 hover:text-green-200">Hospital Directory</a></li>
+            <li><a href="rescue_teams.html" class="block py-2 font-semibold text-green-200">Rescue Teams</a></li>
+            <li><a href="snakes.html" class="block py-2 hover:text-green-200">Snakes</a></li>
+            <li><a href="index.html#about" class="block py-2 text-green-200">About</a></li>
+            <li><a href="index.html#features" class="block py-2 hover:text-green-200">Features</a></li>
+            <li><a href="index.html#screenshots" class="block py-2 hover:text-green-200">Screenshots</a></li>
+            <li><a href="index.html#contact" class="block py-2 hover:text-green-200">Contact</a></li>
+        </ul>
+    </div>
+</header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-green-800 mb-2">Rescue Teams Directory</h1>
+      <p class="text-gray-600">Find snake bite rescue teams across Bangladesh</p>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="search-container rounded-xl p-6 mb-10 text-white">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-bold mb-4">উদ্ধারকারী দল খুঁজুন</h2>
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="flex-1 relative">
+            <input
+              type="text"
+              id="search"
+              placeholder="নাম বা জেলা লিখুন..."
+              class="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <i class="fas fa-search absolute right-3 top-3.5 text-gray-500"></i>
+          </div>
+          <div class="flex-1">
+            <select
+              id="district"
+              class="w-full px-4 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">সকল জেলা</option>
+              <!-- Additional options dynamically inserted -->
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Rescue Teams Section -->
+    <div class="mt-12">
+      <h2 class="text-2xl font-bold text-green-800 mb-6">All Rescue Teams in Bangladesh</h2>
+      <div class="flex justify-center" id="loader">
+        <div class="loader"></div>
+      </div>
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"
+        id="all-rescue-teams"
+      >
+        <!-- Rescue team cards will be inserted here by JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-green-900 text-white py-8 mt-12">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <p>© 2025 Smart Software Limited. All rights reserved.</p>
+        </div>
+        <div class="flex space-x-4">
+          <a href="#" class="hover:text-green-200">Terms of Service</a>
+          <a href="#" class="hover:text-green-200">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Global variables to store data
+    let rescueTeams = [];
+    let districts = [];
+
+    // Utility function for retrying API requests
+    async function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          if (attempt === maxRetries) throw error;
+          console.warn(`Attempt ${attempt} failed for ${url}. Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
+    }
+
+    // Fetch all rescue team data from paginated API
+    async function fetchAllRescueTeams() {
+      let allRescueTeams = [];
+      let currentPage = 1;
+      let lastPage = 1;
+      const baseUrl = 'https://snakebite.smartsoft-bd.com/api/rescueteams';
+
+      try {
+        while (currentPage <= lastPage) {
+          const data = await fetchWithRetry(`${baseUrl}?page=${currentPage}`);
+          const rescueTeamData = data.rescueTeams || [];
+          allRescueTeams = [...allRescueTeams, ...rescueTeamData];
+          lastPage = data.pagination.last_page || 1;
+          currentPage++;
+        }
+        return allRescueTeams;
+      } catch (error) {
+        console.error('Error fetching rescue team data:', error);
+        throw error;
+      }
+    }
+
+    // Fetch data from APIs
+    async function fetchData() {
+      const loader = document.getElementById('loader');
+      const rescueTeamContainer = document.getElementById('all-rescue-teams');
+      
+      // Show loader
+      loader.classList.remove('hidden');
+      rescueTeamContainer.classList.add('hidden');
+
+      try {
+        // Fetch all rescue teams
+        rescueTeams = await fetchAllRescueTeams();
+
+        // Extract unique districts
+        districts = [...new Set(rescueTeams.map(team => team.district))].sort();
+
+        populateDistrictDropdown();
+        displayRescueTeams(rescueTeams);
+
+        // Hide loader and show rescue teams
+        loader.classList.add('hidden');
+        rescueTeamContainer.classList.remove('hidden');
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        loader.classList.add('hidden');
+        rescueTeamContainer.classList.remove('hidden');
+        rescueTeamContainer.innerHTML = `
+          <div class="text-center text-red-600">
+            <p>Failed to load rescue team data. This may be due to a network issue or server error.</p>
+            <button id="retry-button" class="mt-4 px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800">
+              Try Again
+            </button>
+          </div>
+        `;
+        // Add event listener for retry button
+        document.getElementById('retry-button')?.addEventListener('click', fetchData);
+      }
+    }
+
+    // Populate district dropdown
+    function populateDistrictDropdown() {
+      const districtSelect = document.getElementById('district');
+      districtSelect.innerHTML = '<option value="">All Districts</option>';
+      districts.forEach((district) => {
+        const option = document.createElement('option');
+        option.value = district;
+        option.textContent = district;
+        districtSelect.appendChild(option);
+      });
+    }
+
+    // Display rescue teams
+    function displayRescueTeams(teamList) {
+      const container = document.getElementById('all-rescue-teams');
+      container.innerHTML = '';
+
+      teamList.forEach((team) => {
+        const card = document.createElement('div');
+        card.className =
+          'bg-white rounded-lg shadow-md overflow-hidden rescue-card border border-gray-200';
+        card.innerHTML = `
+          <div class="p-4">
+            <h3 class="font-bold text-lg text-green-800">${team.name}</h3>
+            <div class="flex items-center text-sm text-gray-600 mb-2">
+              <i class="fas fa-map-marker-alt mr-2 text-green-600"></i>
+              <span>District: ${team.district}</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-600 mb-2">
+              <i class="fas fa-phone-alt mr-2 text-green-600"></i>
+              <span>${team.phone}</span>
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 flex justify-between items-center border-t">
+            <a href="tel:${team.phone.replace(/\s+/g, '')}" class="text-green-700 hover:text-green-900 font-medium flex items-center">
+              <i class="fas fa-phone mr-2"></i> Call Now
+            </a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      if (teamList.length === 0) {
+        container.innerHTML =
+          '<p class="text-gray-600">No rescue teams found matching your criteria.</p>';
+      }
+    }
+
+    // Search and filter logic
+    function filterRescueTeams() {
+      const searchValue = document.getElementById('search').value.trim().toLowerCase();
+      const selectedDistrict = document.getElementById('district').value;
+
+      const filtered = rescueTeams.filter((team) => {
+        const teamName = team.name ? team.name.toLowerCase() : '';
+        const teamDistrict = team.district ? team.district.toLowerCase() : '';
+        const teamPhone = team.phone ? team.phone.toLowerCase() : '';
+
+        const matchesSearch =
+          teamName.includes(searchValue) ||
+          teamDistrict.includes(searchValue) ||
+          teamPhone.includes(searchValue);
+
+        const matchesDistrict =
+          !selectedDistrict || team.district === selectedDistrict;
+
+        return matchesSearch && matchesDistrict;
+      });
+
+      displayRescueTeams(filtered);
+    }
+
+    // Event listeners
+    document.getElementById('search').addEventListener('input', filterRescueTeams);
+    document.getElementById('district').addEventListener('change', filterRescueTeams);
+
+    // Initial data fetch
+    fetchData();
+  </script>
+</body>
+</html>
